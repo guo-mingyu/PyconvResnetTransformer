@@ -31,3 +31,11 @@ git push -u origin main
 ### …or import code from another repository
 
 You can initialize this repository with code from a Subversion, Mercurial, or TFS project.# PyconvResnetTransformer
+
+
+
+Atoken
+
+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
+
+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
