@@ -34,7 +34,7 @@ docker run --rm -it -v "$(pwd):/workspace" -w /workspace detr
 
 
 
-
+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
 
 
 
