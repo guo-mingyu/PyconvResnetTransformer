@@ -13,10 +13,22 @@ python cocoClass_script.py --ann_file path
 ```
 将path替换为COCO 2017数据集的标注文件的路径。
 
+例 
+```
+COCO 2017数据集中的类别：
+['person', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus', 'train', 'truck', 'boat', 'traffic light']
+```
+
+
 selectCategories
 ======
 ```python
 python select_categories.py
+```
+showClassPrint->Input[selected_categories]
+
+```
+selected_categories = ['person', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus', 'train', 'truck', 'boat', 'traffic light']
 ```
 
 In coco-detr.py, all object categories in the COCO dataset are converted into the DETR format. However, if you only want to train on specific categories, you can use select_categories.py to select only the desired categories from the converted annotations and save them as a new JSON file.
