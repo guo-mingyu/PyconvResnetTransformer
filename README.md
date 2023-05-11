@@ -14,3 +14,27 @@
 
 - 最后，你可以使用修改后的代码来训练 DETR 模型。你可以使用 PyTorch 提供的训练代码或编写自己的训练脚本来完成这一步。请注意，你可能需要根据你的数据集大小和硬件资源修改训练参数。
 
+进入到WSL的bash环境
+在PowerShell中，你可以使用以下命令进入到WSL的bash环境：
+
+Copy code
+wsl
+然后，你可以在bash中使用以下命令进入到工作目录：
+
+bash
+Copy code
+cd /home/guomingyu/PyconvResnetTransformer
+接着，你可以使用以下命令启动Docker容器，并指定工作目录：
+
+bash
+Copy code
+docker run --rm -it -v "$(pwd):/workspace" -w /workspace detr
+其中，$(pwd)表示当前目录，也就是/home/guomingyu/PyconvResnetTransformer。-v选项用于挂载当前目录到容器中的/workspace目录下，-w选项用于指定容器的工作目录为/workspace。
+
+
+
+
+
+
+
+
