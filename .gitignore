@@ -1,0 +1,9 @@
+datasets/data/
+datasets/path/
+*.pth
+.ipynb_checkpoints/
+**/__pycache__/**
+.vscode
+*.pyc
+.nfs*
+*.ipynb
