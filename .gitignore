@@ -7,3 +7,4 @@ datasets/path/
 *.pyc
 .nfs*
 *.ipynb
+.ipynb_checkpoints/
