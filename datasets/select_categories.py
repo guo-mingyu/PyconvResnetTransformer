@@ -1,7 +1,8 @@
 import json
 import os
+from tqdm import tqdm
 
-selected_categories = ["person", "car", "dog", "cat", "bird", "chair", "table", "bottle", "cup", "fork"]
+selected_categories = ['person', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus', 'train', 'truck', 'boat', 'traffic light']
 selected_category_ids = []
 
 with open("./path/to/coco/annotations/detr_train.json", "r") as f:
@@ -13,7 +14,7 @@ with open("./path/to/coco/annotations/detr_train.json", "r") as f:
 
     images = []
     annotations = []
-    for image in train_data["images"]:
+    for image in tqdm(train_data["images"], desc="Processing train data"):
         image_id = image["id"]
         image_annotations = []
         for annotation in train_data["annotations"]:
@@ -26,7 +27,7 @@ with open("./path/to/coco/annotations/detr_train.json", "r") as f:
     train_data["images"] = images
     train_data["annotations"] = annotations
 
-    with open("selected_train.json", "w") as f:
+    with open("./path/to/coco/annotations/selected_train.json", "w") as f:
         json.dump(train_data, f)
 
 with open("./path/to/coco/annotations/detr_val.json", "r") as f:
@@ -38,7 +39,7 @@ with open("./path/to/coco/annotations/detr_val.json", "r") as f:
 
     images = []
     annotations = []
-    for image in val_data["images"]:
+    for image in tqdm(val_data["images"], desc="Processing validation data"):
         image_id = image["id"]
         image_annotations = []
         for annotation in val_data["annotations"]:
@@ -51,5 +52,5 @@ with open("./path/to/coco/annotations/detr_val.json", "r") as f:
     val_data["images"] = images
     val_data["annotations"] = annotations
 
-    with open("selected_val.json", "w") as f:
+    with open("./path/to/coco/annotations/selected_val.json", "w") as f:
         json.dump(val_data, f)
