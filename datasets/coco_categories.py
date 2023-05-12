@@ -11,8 +11,11 @@ file_size = os.path.getsize(instances_path)
 
 # Load the COCO instances file
 try:
+    print("Start to create the file 'coco_categories.json'!")
     with open(instances_path, "r") as f:
+        print("Loading instances from file...")
         instances = json.load(f)
+        print("File reading successful!")
 except FileNotFoundError:
     print(f"Error: File {instances_path} not found.")
     exit(1)
@@ -25,11 +28,15 @@ categories = instances["categories"]
 
 # Save the categories to a new file
 try:
+    print("Start to extract the categories...")
     with open(output_path, "w") as f:
+        f.write("[")
         for i, category in tqdm(enumerate(categories), total=len(categories), unit=" categories", desc="Extracting categories", ncols=80):
             json.dump(category, f)
             if i < len(categories) - 1:
-                f.write("\n")
+                f.write(",")
+        f.write("]")
+    print("Category extraction successful!")
 except FileNotFoundError:
     print(f"Error: Unable to open file {output_path} for writing.")
     exit(1)
