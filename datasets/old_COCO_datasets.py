@@ -5,7 +5,6 @@ import json
 import os
 from tqdm import tqdm
 import argparse
-import concurrent.futures
 
 # Create the argument parser
 parser = argparse.ArgumentParser(description="Script to load COCO data")
@@ -40,8 +39,10 @@ category_id_map = {}
 for category in categories:
     category_id_map[category["name"]] = category["id"]
 
-# Define the function to process the images and targets
-def process_image(image):
+# Create the list of images and targets for training
+train_images = []
+train_targets = []
+for image in tqdm(train_data["images"], desc="Processing training images", unit=" images", ncols=80):
     try:
         # Load the image
         image_path = "./path/to/coco/train2017/" + image["file_name"]
@@ -63,30 +64,19 @@ def process_image(image):
                 boxes.append([x_center, y_center, w, h])
                 labels.append(category_id_map[categories[annotation["category_id"] - 1]["name"]])
 
-        # Return the image and targets
-        return (np.array(img), {
+        # Add the image and targets to the training data
+        train_images.append(np.array(img))
+        train_targets.append({
             "boxes": torch.tensor(boxes, dtype=torch.float),
             "labels": torch.tensor(labels, dtype=torch.long)
         })
     except Exception as e:
         print(f"Error processing image '{image['file_name']}': {e}")
 
-# Create the list of images and targets for training
-train_images = []
-train_targets = []
-
-total_images = len(train_data["images"])
-
-with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
-    results = list(tqdm(executor.map(process_image, train_data["images"]), desc="Processing training images", unit=" images", ncols=80, total=total_images))
-    for result in results:
-        if result is not None:
-            train_images.append(result[0])
-            train_targets.append(result[1])
-        executor.update(1)
-
-# Define the function to process the validation images and targets
-def process_val_image(image):
+# Create the list of images and targets for validation
+val_images = []
+val_targets = []
+for image in tqdm(val_data["images"], desc="Processing validation images", unit=" images", ncols=80):
     try:
         # Load the image
         image_path = "./path/to/coco/val2017/" + image["file_name"]
@@ -108,27 +98,14 @@ def process_val_image(image):
                 boxes.append([x_center, y_center, w, h])
                 labels.append(category_id_map[categories[annotation["category_id"] - 1]["name"]])
 
-        # Return the image and targets
-        return (np.array(img), {
+        # Add the image and targets to the validation data
+        val_images.append(np.array(img))
+        val_targets.append({
             "boxes": torch.tensor(boxes, dtype=torch.float),
             "labels": torch.tensor(labels, dtype=torch.long)
         })
     except Exception as e:
         print(f"Error processing image {image['file_name']}: {str(e)}")
-
-# Create the list of images and targets for validation
-val_images = []
-val_targets = []
-
-total_images = len(val_data["images"])
-
-with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
-    results = list(tqdm(executor.map(process_val_image, val_data["images"]), desc="Processing validation images", unit=" images", ncols=80, total=total_images))
-    for result in results:
-        if result is not None:
-            val_images.append(result[0])
-            val_targets.append(result[1])
-        executor.update(1)
 
 # Save the data
 torch.save((train_images, train_targets), "train_data.pt")
