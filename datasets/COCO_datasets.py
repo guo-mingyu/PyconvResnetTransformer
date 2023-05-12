@@ -9,14 +9,20 @@ import argparse
 # Create the argument parser
 parser = argparse.ArgumentParser(description="Script to load COCO data")
 
-# Add the path arguments
-parser.add_argument("--train_data_path", default='./path/to/coco/', type=str, required=True,
+# Add the path arguments with default values
+parser.add_argument("--train_data_path", default=r'./path/to/coco', type=str,
                     help="Path to the training data")
-parser.add_argument("--val_data_path", default='./path/to/coco/', type=str, required=True,
+parser.add_argument("--val_data_path", default=r'./path/to/coco', type=str,
                     help="Path to the validation data")
 
 # Parse the arguments
 args = parser.parse_args()
+
+# If the user specified a different path, use it instead of the default
+if args.train_data_path != r'./path/to/coco':
+    train_data_path = args.train_data_path
+if args.val_data_path != r'./path/to/coco':
+    val_data_path = args.val_data_path
 
 # Load the COCO categories
 with open(args.train_data_path + "/annotations/coco_categories.json", "r") as f:
