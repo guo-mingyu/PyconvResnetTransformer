@@ -6,6 +6,7 @@ import os
 from tqdm import tqdm
 import argparse
 import concurrent.futures
+import sys
 
 # Create the argument parser
 parser = argparse.ArgumentParser(description="Script to load COCO data")
@@ -64,12 +65,16 @@ def process_image(image):
                 labels.append(category_id_map[categories[annotation["category_id"] - 1]["name"]])
 
         # Return the image and targets
-        return (np.array(img), {
+        result = (np.array(img), {
             "boxes": torch.tensor(boxes, dtype=torch.float),
             "labels": torch.tensor(labels, dtype=torch.long)
         })
+        # Free up memory
+        del img
+        return result
     except Exception as e:
         print(f"Error processing image '{image['file_name']}': {e}")
+        sys.exit(1)
 
 # Create the list of images and targets for training
 train_images = []
@@ -109,12 +114,16 @@ def process_val_image(image):
                 labels.append(category_id_map[categories[annotation["category_id"] - 1]["name"]])
 
         # Return the image and targets
-        return (np.array(img), {
+        result = (np.array(img), {
             "boxes": torch.tensor(boxes, dtype=torch.float),
             "labels": torch.tensor(labels, dtype=torch.long)
         })
+        # Free up memory
+        del img
+        return result
     except Exception as e:
         print(f"Error processing image {image['file_name']}: {str(e)}")
+        sys.exit(1)
 
 # Create the list of images and targets for validation
 val_images = []
