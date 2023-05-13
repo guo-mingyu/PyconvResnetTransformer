@@ -88,6 +88,11 @@ with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
         if result is not None:
             train_images.append(result[0])
             train_targets.append(result[1])
+        del result  # 释放资源
+
+# Save the data
+torch.save((train_images, train_targets), "train_data.pt")
+print("Data training processing complete.")
 
 # Define the function to process the validation images and targets
 def process_val_image(image):
@@ -136,8 +141,9 @@ with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
         if result is not None:
             val_images.append(result[0])
             val_targets.append(result[1])
+        del result  # 释放资源
 
 # Save the data
-torch.save((train_images, train_targets), "train_data.pt")
 torch.save((val_images, val_targets), "val_data.pt")
-print("Data processing complete.")
+print("Data validation processing complete.")
+
