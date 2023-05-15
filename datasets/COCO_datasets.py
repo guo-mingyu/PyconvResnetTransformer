@@ -100,7 +100,7 @@ def process_val_image(image):
         # Load the image
         image_path = "./path/to/coco/val2017/" + image["file_name"]
         img = Image.open(image_path).convert("RGB")
-        img_width, img_height = img.size
+        img_width, img_height = img.sizew
 
         # Create the list of boxes and labels for the image
         boxes = []
