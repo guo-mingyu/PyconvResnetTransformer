@@ -1,3 +1,6 @@
+"""
+Code Copyright (c) guo mingyu
+"""
 import torch
 from PIL import Image
 import numpy as np

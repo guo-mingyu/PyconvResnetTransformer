@@ -1,8 +1,11 @@
+"""
+Code Copyright (c) guo mingyu
+"""
 import json
 import os
 from tqdm import tqdm
 
-selected_categories = ['person', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus', 'train', 'truck', 'boat', 'traffic light']
+selected_categories = ['person', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus', 'train', 'truck', 'boat', 'traffic light'] # Modify according to the actual situation
 selected_category_ids = []
 
 with open("./path/to/coco/annotations/detr_train.json", "r") as f:

@@ -44,3 +44,32 @@ COCO-datasets
 ```
 python script.py --train_data_path /path/to/train/data --val_data_path /path/to/val/data
 当运行脚本时，argparse会解析这些参数并将它们存储在args对象中，然后您可以使用它们来构建文件路径。
+
+
+
+
+在 log.txt 文件中，每个训练值表示以下内容：
+======
+```
+train_lr: 训练时的学习率（learning rate）
+train_class_error: 训练集的分类错误率（classification error）
+train_loss: 训练集的总损失（total loss）
+train_loss_ce: 训练集的交叉熵损失（cross-entropy loss）
+train_loss_bbox: 训练集的边界框损失（bounding box loss）
+train_loss_giou: 训练集的GIoU损失（generalized intersection over union loss）
+train_loss_ce_0, train_loss_ce_1, ...: 训练集每个头部的交叉熵损失（cross-entropy loss）（如果模型有多个头部）
+train_loss_bbox_0, train_loss_bbox_1, ...: 训练集每个头部的边界框损失（bounding box loss）（如果模型有多个头部）
+train_loss_giou_0, train_loss_giou_1, ...: 训练集每个头部的GIoU损失（generalized intersection over union loss）（如果模型有多个头部）
+train_cardinality_error_unscaled: 训练集的目标数量错误率（target cardinality error）
+test_class_error: 测试集的分类错误率（classification error）
+test_loss: 测试集的总损失（total loss）
+test_loss_ce: 测试集的交叉熵损失（cross-entropy loss）
+test_loss_bbox: 测试集的边界框损失（bounding box loss）
+test_loss_giou: 测试集的GIoU损失（generalized intersection over union loss）
+test_loss_ce_0, test_loss_ce_1, ...: 测试集每个头部的交叉熵损失（cross-entropy loss）（如果模型有多个头部）
+test_loss_bbox_0, test_loss_bbox_1, ...: 测试集每个头部的边界框损失（bounding box loss）（如果模型有多个头部）
+test_loss_giou_0, test_loss_giou_1, ...: 测试集每个头部的GIoU损失（generalized intersection over union loss）（如果模型有多个头部）
+test_cardinality_error_unscaled: 测试集的目标数量错误率（target cardinality error）
+test_coco_eval_bbox: 测试集的COCO评估结果（bounding box evaluation）
+
+```

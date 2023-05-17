@@ -1,3 +1,6 @@
+"""
+Code Copyright (c) guo mingyu
+"""
 import os
 import sys
 import tarfile

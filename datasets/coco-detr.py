@@ -1,3 +1,6 @@
+"""
+Code Copyright (c) guo mingyu
+"""
 import json
 from pathlib import Path
 
