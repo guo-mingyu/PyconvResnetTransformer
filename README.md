@@ -29,6 +29,11 @@ cd /home/guomingyu/PyconvResnetTransformer
 bash
 Copy code
 docker run --rm -it -v "$(pwd):/workspace" -w /workspace detr
+
+docker run --gpus all --rm -it --shm-size=80g -v "$(pwd):/workspace" -w /workspace detr
+
+
+
 其中，$(pwd)表示当前目录，也就是/home/guomingyu/PyconvResnetTransformer。-v选项用于挂载当前目录到容器中的/workspace目录下，-w选项用于指定容器的工作目录为/workspace。
 
 
