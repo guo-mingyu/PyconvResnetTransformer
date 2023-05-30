@@ -3,6 +3,7 @@ Code Copyright (c) guo mingyu
 """
 import json
 from pathlib import Path
+from tqdm import tqdm
 
 # COCO annotation file path
 train_ann_file = Path('./path/to/coco/annotations/instances_train2017.json')
@@ -18,41 +19,51 @@ with open(val_ann_file, 'r') as f:
 # Select 10 classes to train
 selected_classes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
-# Convert COCO annotations to DETR format
+# Filter images and annotations based on selected classes
 detr_train_ann = {'images': [], 'annotations': [], 'categories': []}
 detr_val_ann = {'images': [], 'annotations': [], 'categories': []}
 
-for i, cat in enumerate(train_ann['categories']):
-    if cat['id'] in selected_classes:
-        cat['id'] = i
-        detr_train_ann['categories'].append(cat)
-
-for i, cat in enumerate(val_ann['categories']):
-    if cat['id'] in selected_classes:
-        cat['id'] = i
-        detr_val_ann['categories'].append(cat)
-
-for img in train_ann['images']:
-    new_img = {'file_name': img['file_name'], 'id': img['id'], 'height': img['height'], 'width': img['width']}
-    detr_train_ann['images'].append(new_img)
-
-for img in val_ann['images']:
-    new_img = {'file_name': img['file_name'], 'id': img['id'], 'height': img['height'], 'width': img['width']}
-    detr_val_ann['images'].append(new_img)
-
-ann_id = 0
-for ann in train_ann['annotations']:
+selected_train_images = []
+selected_train_annotations = []
+for ann in tqdm(train_ann['annotations'], desc="Processing train annotations"):
     if ann['category_id'] in selected_classes:
-        new_ann = {'bbox': ann['bbox'], 'image_id': ann['image_id'], 'category_id': selected_classes.index(ann['category_id']), 'id': ann_id, 'iscrowd': 0, 'area': ann['area']}
-        detr_train_ann['annotations'].append(new_ann)
-        ann_id += 1
+        selected_train_annotations.append(ann)
 
-ann_id = 0
-for ann in val_ann['annotations']:
+selected_val_images = []
+selected_val_annotations = []
+for ann in tqdm(val_ann['annotations'], desc="Processing validation annotations"):
     if ann['category_id'] in selected_classes:
-        new_ann = {'bbox': ann['bbox'], 'image_id': ann['image_id'], 'category_id': selected_classes.index(ann['category_id']), 'id': ann_id, 'iscrowd': 0, 'area': ann['area']}
-        detr_val_ann['annotations'].append(new_ann)
-        ann_id += 1
+        selected_val_annotations.append(ann)
+
+for img in tqdm(train_ann['images'], desc="Processing train images"):
+    if img['id'] in [ann['image_id'] for ann in selected_train_annotations]:
+        selected_train_images.append(img)
+
+for img in tqdm(val_ann['images'], desc="Processing validation images"):
+    if img['id'] in [ann['image_id'] for ann in selected_val_annotations]:
+        selected_val_images.append(img)
+
+# Update categories and annotations with new IDs
+for i, cat_id in enumerate(selected_classes):
+    cat = train_ann['categories'][cat_id - 1]
+    cat['id'] = i + 1
+    detr_train_ann['categories'].append(cat)
+    detr_val_ann['categories'].append(cat)
+
+for ann in tqdm(selected_train_annotations, desc="Updating train annotations"):
+    ann['category_id'] = selected_classes.index(ann['category_id']) + 1
+    detr_train_ann['annotations'].append(ann)
+
+for ann in tqdm(selected_val_annotations, desc="Updating validation annotations"):
+    ann['category_id'] = selected_classes.index(ann['category_id']) + 1
+    detr_val_ann['annotations'].append(ann)
+
+# Update images with new IDs
+for img in selected_train_images:
+    detr_train_ann['images'].append(img)
+
+for img in selected_val_images:
+    detr_val_ann['images'].append(img)
 
 # Save DETR annotations as JSON files
 detr_train_path = 'detr_train.json'
@@ -63,4 +74,3 @@ with open(detr_train_path, 'w') as f:
 
 with open(detr_val_path, 'w') as f:
     json.dump(detr_val_ann, f)
-
