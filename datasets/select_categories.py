@@ -8,7 +8,7 @@ from tqdm import tqdm
 selected_categories = ['person', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus', 'train', 'truck', 'boat', 'traffic light'] # Modify according to the actual situation
 selected_category_ids = []
 
-with open("./path/to/coco/annotations/instances_train2017.json", "r") as f:
+with open("./path/to/coco/annotations/detr_train.json", "r") as f:
     train_data = json.load(f)
     categories = train_data["categories"]
     for category in categories:
@@ -34,7 +34,7 @@ with open("./path/to/coco/annotations/instances_train2017.json", "r") as f:
     with open("./path/to/coco/annotations/selected_train.json", "w") as f:
         json.dump(train_data, f)
 
-with open("./path/to/coco/annotations/instances_val2017.json", "r") as f:
+with open("./path/to/coco/annotations/detr_val.json", "r") as f:
     val_data = json.load(f)
     categories = val_data["categories"]
     for category in categories:
