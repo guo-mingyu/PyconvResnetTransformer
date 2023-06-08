@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SshConfigs">
+    <configs>
+      <sshConfig host="ssh.cn-chengdu-n22.paracloud.com" id="7fed42a1-4532-4559-8317-95d001456a02" keyPath="D:\key\id_ecdsa" port="22" nameFormat="DESCRIPTIVE" username="scv0380@BSCC-N22" useOpenSSHConfig="true" />
+    </configs>
+  </component>
+</project>
